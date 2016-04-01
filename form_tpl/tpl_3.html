@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>TITLE</title>
+<link rel="stylesheet" type="text/css" href="HOSTtemplates/zh/default/images/style.css" />
+<script type="text/javascript" src="HOSTtemplates/zh/default/images/jquery-1.4.4.min.js"></script> 
+<script type="text/javascript" src="HOSTtemplates/zh/default/images/EmailMeForm.js"></script> 
+<link rel="stylesheet" type="text/css" href="HOSTformManage.php?act=createFormStyle&id=ID" />
+</head>
+<body id="emf-container-wrap" class="form">
+<form id="submitUP" name="FormContent" action="HOSTform.php?act=submit" method="post" enctype="multipart/form-data">
+  <div id="emf-container-outer">
+    <div id="emf-container">
+      <div id="emf-logo">MrMOBI</div>
+      <div class="emf-form">
+        <div id="emf-form-instruction" class="emf-head-widget">
+          <div id="emf-form-title" >TITLE</div>
+          <div id="emf-form-description"></div>
+        </div>
+        <ul>
+          CONTENT
+          <li id="emf-li-recaptcha">  <div id="updatecode"><img src="HOSTadmin.php?act=chkcode&codeType=form" border="0" align="absmiddle" style="cursor:pointer;" onClick="qgupdatecode()"></div>
+            <input id="authcode_field" type="text" name="authcode_field" style="border: 1px solid #3c3c3c; width: 90px;height:26px;text-align:center;" onKeyUp="pressCaptcha(this);">
+          </li>
+          <li id="emf-li-post-button">
+            <input type="hidden" name="form_id" value="FORMID"/>
+            <input type="hidden" name="url" id="url" value="" />
+            BUTTON
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</form>
+<div style="text-align:center"> <font face="Verdana" color="#000000" size="2">Powered by</font> <span style="position: relative; padding-left: 3px; bottom: -5px;"> <img src="http://form2me.gootop.net/templates/zh/default/images/footer-logo.png"/> </span> <font face="Verdana" color="#000000" size="2">EMF </font> <a target="_blank" href="#" style="text-decoration:none;"> <font face="Verdana" color="#000000" size="2">Forms Builder</font> </a> <br>
+  <font face="Verdana" color="#000000" size="2"> <a target="_blank" href="#" style="line-height:20px;font-size:70%;text-decoration:none;">Report Abuse</a> </font> </div>
+
+<script type="text/javascript">
+//<![CDATA[
+function checkinfo() {
+	var k = 1;
+	jQuery('.err_img').hide();
+	jQuery('.emf-label-desc').each(function(i){
+		if(jQuery(this).find('span').html()=='*'){
+			var tar = jQuery(this).next('.emf-div-field');
+			var type = jQuery('> span', tar).attr('type');
+			//alert(type);
+			if(type=='text'){
+				var val = jQuery('input[type="text"]',tar).val();
+				if(!val){
+					//GM.pop(jQuery('input', tar),"该内容不能为空.",false,0,-200);
+					jQuery('.err_img', tar).show();
+					jQuery('.err_img', tar).first().html('该内容不能为空');
+					k = 0;
+					window.location.hash = jQuery('> a',this).attr('name');
+					return false;
+				}
+			}else if(type=='textarea'){
+				var val = jQuery('textarea', tar).val();
+				if(!val){
+					jQuery('.err_img', tar).show();
+					jQuery('.err_img', tar).first().html('该内容不能为空');
+					k = 0;
+					window.location.hash = jQuery('> a',this).attr('name');
+					return false;
+				}
+			}else if(type=='radio' || type=='checkbox'){
+				var len = 0;
+				jQuery('input', tar).each(function(e){
+					if(jQuery(this).attr('checked')){
+						len = 1;
+						return false;
+					}
+				});
+				if(len == 0){
+					jQuery('.err_img', tar).show();
+					jQuery('.err_img', tar).first().html('该内容不能为空');
+					k = 0;
+					window.location.hash = jQuery('> a',this).attr('name');
+					return false;
+				}
+			}else if(type=='select'){
+				var len = 0;
+				jQuery('select', tar).each(function(e){
+					if(jQuery(this).attr('selected')){
+						len = 1;
+						return false;
+					}
+				});
+				if(len == 0){
+					jQuery('.err_img', tar).show();
+					jQuery('.err_img', tar).first().html('该内容不能为空');
+					k = 0;
+					window.location.hash = jQuery('> a',this).attr('name');
+					return false;
+				}
+			}
+		}
+	});
+	if(k == 0){
+		return false;
+	}
+	var authcode = jQuery('#authcode_field').val();
+	if(!authcode){
+		alert('请填写验证码');
+		return false;
+	}
+	jQuery.ajax({
+		url:'HOSTformManage.php?act=checkauthcode&code='+authcode,
+		type:'GET',
+		dataType:'jsonp',
+		jsonpCallback:'authcallback',
+		success:function(data){
+			if(!data['state']){
+				alert('验证码错误');
+				return false;
+			}else{
+				jQuery('#submitUP').submit();
+			}
+		}
+	});
+}
+function pressCaptcha(obj)
+{
+	obj.value = obj.value.toUpperCase();
+}
+function qgupdatecode()
+{
+	var rand = Math.random();
+	jQuery('#updatecode').html('<img src="HOSTadmin.php?act=chkcode&codeType=form&rand=' + rand + '" border="0" align="absmiddle" style="cursor:pointer;" onclick="qgupdatecode()">');
+}
+//]]>
+</script>
+</body>
+</html>
+                                

@@ -1,0 +1,283 @@
+<!-- inc:global_head -->
+<!-- inc:right.css -->
+<!-- inc:right.head -->
+
+<link rel="stylesheet" type="text/css" href="images/form1.css" />
+<link rel="stylesheet" type="text/css" href="images/jquery-ui-1.8.7.custom.css" />
+<script type="text/javascript" src="images/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="images/jquery-ui-1.8.7.custom.min.js"></script>
+<script type="text/javascript" src="images/form1.js"></script>
+
+<div id="form_main">
+<table width="0" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td valign="top" class="form_left_con">
+        <div class="form_left">
+            <div class="form_left_con">
+            	 <ul class="form_left_menu">
+                     <li><a href="#" class="tabbj2" id="check1"><img src="images/form-add-field.png"/></a></li>
+                     <li><a href="#" class="tabbj1" id="check2"><img src="images/form-field-settings.png"/></a></li>
+                     <li><a href="#" class="tabbj1" id="check3"><img src="images/form-form-settings.png"/></a></li>
+                 </ul>
+                <div class="form_clear"></div>
+                <div class="form_left_con2" id="table1">
+                    <h3>Basic</h3>
+                    <!-- $blist AS $key=>$value -->
+			   			<!-- if($key%3==0) -->
+			   				<ul class="form_basic_left">
+                        <!-- end -->
+			   			<li><a href="#" onclick="add_canvas_widget('{run:echo str_replace(' ','_',strtolower($value['field_type']));}');return false;" id="form_widget_{:$value[id]}">{:$value[field_name]}</a></li>
+                        <!-- if($key%3==2 || $key==(count($baselist)-1)) -->
+			   			</ul>
+			   			<!-- end -->
+			   		<!-- end -->
+                    <div class="form_clear"></div>
+                </div>
+               <form name="form1" id="modifyUP" action="admin.php?file=form&act=modifyOK&id={:$id}" method="post" >
+                <div class="form_left_con2" id="table2" style="display:none;">
+                	<span id="notice_content">Please select a field
+
+Click on a field in the form preview on the right to change its properties.</span>
+					{:$configStr}
+                </div>
+                <input type="hidden" name="field_count" id="field_count" value="{:$count}"/>
+                <input type="hidden" name="cateid" value="{:$cateid}" />
+                <div class="form_left_con2" id="table3" style="display:none;">
+                	<ul class="form_settings_ul">
+                	 	<li>
+                        	<label class="form_settings_label">
+                                 表单标题  
+                            </label>
+                            <input type="text" name="form_title" id="form_title" value="{:$formMsg[form_title]}" style="width:300px;" onkeyup="setValue(jQuery(this),'form_title',0);" />
+                            <br/>
+                            <input type="checkbox" name="show_title" value="1" {if($formMsg[show_title]==1)}checked{end}/>是否显示标题
+                        </li>
+                    	<li>
+                        	<label class="form_settings_label">
+                               	 描述
+                            </label>
+                            <textarea name="description" class="form_text" style="width:100%;height:70px;color:#333;font-size:12px;">{:$formMsg[description]}</textarea>                        </li>
+                        <li>
+                            <fieldset>
+                                <legend class="form_settings_group">表单确认选项</legend>
+                                <div class="form_fieldset_div_2">
+                                	<input type="radio" name="sure_options" value="1" onclick="showNotice(1);" {if($formMsg[sure_options]==1)}checked{end} />信息提示&nbsp;<input type="radio" name="sure_options" value="2" onclick="showNotice(2);" {if($formMsg[show_title]==2)}checked{end}/>页面重定向
+                                    <br/>
+                                    <span id="notice">请填写提示信息</span>
+                                    <input type="text" name="sure_content" id="sure_content" style="width:280px;" value="{:$formMsg[sure_content]}"/>
+                                </div>
+                            </fieldset>
+                        </li>
+                        <li>
+                        	<label class="form_settings_label">
+                                 标签位置 
+                            </label>
+                            <select name="label_position" style="width:110px;">
+                            	<option value="left" {if($formMsg[label_position]=='left')}selected{end}>靠左</option>
+                                <option value="top" {if($formMsg[label_position]=='top')}selected{end}>靠上</option>
+                                <option value="right" {if($formMsg[label_position]=='right')}selected{end}>靠右</option>
+                            </select>
+                        </li>
+                        <li>
+                        	<label class="form_settings_label">
+                                 表单宽度  
+                            </label>
+                            <input type="text" name="width" class="form_text" style="width:100%;" value="{:$formMsg[width]}"/>
+                        </li>
+                        <li>
+                        	<label class="form_settings_label">
+                                 按钮名称
+                            </label>
+                            <input type="text" name="button_name" class="form_text" style="width:100%;" value="{:$formMsg[button_name]}"/>
+                        </li>
+                        <li>
+                            <fieldset>
+                                <legend class="form_settings_group">按钮位置</legend>
+                                <div class="form_fieldset_div_2">
+                                	<input  class="form_text"type="radio" name="button_align" value="left" {if($formMsg[button_align]=='left')}checked{end} />左边&nbsp;<input type="radio" class="form_text" name="button_align" value="center" {if($formMsg[button_align]=='center')}checked{end}/>中间&nbsp;<input class="form_text" type="radio" name="button_align" value="right" {if($formMsg[button_align]=='right')}checked{end}/>右边
+                                </div>
+                            </fieldset>
+                        </li>
+                        <li>
+                            <fieldset>
+                                <legend class="form_settings_group">是否开放</legend>
+                                <div class="form_fieldset_div_2">
+                                    <input class="form_text" type="radio" name="enable" value="1" {if($formMsg[enable]==1)}checked{end} />开放&nbsp;&nbsp;<input type="radio" class="form_text" name="enable" value="0" {if($formMsg[enable]==0)}checked{end}/>关闭
+                                    <input class="form_text" type="hidden" name="form_info_id" value="{:$formMsg[form_info_id]}" />
+                                </div>
+                            </fieldset>
+                        </li>
+                    </ul>
+                </div>
+                </form>
+            </div>
+        </div>
+    </td>
+   <td valign="top">
+        <div class="form_right">
+            <div class="form_right_con">
+                <div class="form_right_title"></div>
+                <div class="form_right_con2">
+                    <div class="form_right_con2_title">
+                        <a href="#">
+                            <h2 id="formtitle">{:$formMsg[form_title]}</h2>
+                            <p>This is your form description. Click here to edit.</p>
+                        </a>
+                    </div>
+                    <ul class="form_right_con2_con" id="sortable">
+                        {:$contentStr}
+                    </ul>
+                    <ul class="form_right_con2_con">
+                        <li>
+                            <div class="form_right_con2_title_li">
+                                <a href="#"><img src="images/cc.png" /></a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="form_div_button">
+                	<a href="javascript:void(0);" onclick="javascript:jQuery('#modifyUP').submit();"><img src="images/savebutton.png" /></a>
+                </div>
+            </div>
+        </div>
+    </td>
+  </tr>
+</table>
+</div>
+
+<script type="text/javascript">
+function scrollDoor(){
+}
+scrollDoor.prototype = {
+	sd : function(menus,divs,openClass,closeClass){
+		var _this = this;
+		if(menus.length != divs.length)
+		{
+			alert("菜单层数量和内容层数量不一样!");
+			return false;
+		}			
+		for(var i = 0 ; i < menus.length ; i++)
+		{	
+			_this.$(menus[i]).value = i;				
+			_this.$(menus[i]).onclick = function()
+			{
+				if(this.id != 'check2'){
+					jQuery('#notice_content').show();
+					jQuery('#table2 > ul').hide();
+				}
+				for(var j = 0 ; j < menus.length ; j++)
+				{		
+					_this.$(menus[j]).className = closeClass;
+					_this.$(divs[j]).style.display = "none";
+				}
+				_this.$(menus[this.value]).className = openClass;	
+				_this.$(divs[this.value]).style.display = "block";				
+			}
+			_this.$(menus[0]).className = openClass;	
+			_this.$(divs[0]).style.display = "block";	
+			
+		}
+		},
+	$ : function(oid){
+		if(typeof(oid) == "string")
+		return document.getElementById(oid);
+		return oid;
+	}
+}
+
+jQuery(function(){
+	var SDmodel = new scrollDoor();
+	SDmodel.sd(["check1","check2","check3"],["table1","table2","table3"],"tabbj2","tabbj1");
+
+	if(jQuery('#sortable > li').length > 0){
+		jQuery('#sortable > li').each(function(e){
+			var top = jQuery(this).offset().top;
+			var left = jQuery(this).offset().left;
+			jQuery('a div',this).last().css({'top':top+'px','left':(left+590)+'px'});
+		});
+	}
+	jQuery( "#sortable" ).sortable({update:function(event,ui){
+			var len = jQuery('#sortable > li').length;
+			for(var i=0;i<len;i++){
+				var id = jQuery('#sortable > li').eq(i).attr('id');
+				var k = i + 1;
+				jQuery('#ul_'+id+' input').last().val(k);
+			}
+			jQuery('#sortable > li').each(function(e){
+				var top = jQuery(this).offset().top;
+				var left = jQuery(this).offset().left;
+				jQuery('a div',this).last().css({'top':top+'px','left':(left+590)+'px'});
+			});
+		}
+	});
+	jQuery( "#sortable" ).disableSelection();
+	jQuery('#field_count').val(jQuery('#sortable > li').length);
+});
+
+function checkinfo(){
+	return true;
+}
+
+function add_canvas_widget(type,properties){
+	var len = jQuery('#sortable > li').length + 1;
+	if(properties==null){
+		var default_js = widgets[type]['default_js'];
+		properties = default_js();
+		properties['len'] = len;
+	}
+	var designing_js = widgets[type]['designing_js'];
+	var ele = designing_js(properties);
+	jQuery('#sortable').append(ele);
+	var tar = jQuery('#sortable > li').last();
+	var top = jQuery(tar).offset().top;
+	var left = jQuery(tar).offset().left;
+	var ele_div = '<div style="z-index:1000;position:absolute;top:'+(top)+'px;left:'+(left+590)+'px;display:none;" onclick="del_li(event,jQuery(this));return false;"><img src="images/form-element-delete.png" /></div>';
+	jQuery('a',tar).append(ele_div);
+	var setting_js = widgets[type]['setting_js'];
+	setting_js(properties);
+}
+
+//阻止js冒泡事件
+function stopBubble(e) {  
+    if (e && e.stopPropagation) {//非IE  
+        e.stopPropagation();  
+    }  
+    else {//IE  
+        window.event.cancelBubble = true;  
+    }  
+}  
+
+function del_li(event,obj){
+	var id = jQuery(obj).parent('a').parent('li').attr('id');
+	jQuery(obj).parent('a').parent('li').remove();
+	jQuery('#sortable > li').each(function(e){
+		var top = jQuery(this).offset().top;
+		jQuery('a div',this).last().css('top',top+'px');
+		
+	});
+	jQuery('#ul_'+id).remove();
+	var len = jQuery('#sortable > li').length;
+	for(var i=0;i<len;i++){
+		var id = jQuery('#sortable > li').eq(i).attr('id');
+		var k = i + 1;
+		jQuery('#ul_'+id+' input').last().val(k);
+	}
+	jQuery('#field_count').val(jQuery('#table2 > ul').length);
+	jQuery('#table2 > ul').hide();
+	jQuery('#notice_content').show();
+	jQuery('#check2').trigger('click');
+	stopBubble(event);
+	return false;
+}
+function showNotice(value){
+	if(value==1){
+		jQuery('#notice').html('请填写提示信息');
+		jQuery('#sure_content').val('');
+	}else{
+		jQuery('#notice').html('请填写跳转链接');
+		jQuery('#sure_content').val('http://');
+	}
+}
+</script>
+
+<!-- inc:foot -->

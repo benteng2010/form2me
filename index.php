@@ -1,0 +1,4 @@
+<?php
+#[ÍøÕ¾·âÃæÐÅÏ¢]
+header("Location:home.php");
+?>

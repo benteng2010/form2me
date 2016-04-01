@@ -1,0 +1,4 @@
+<?php die('forbidden'); ?>
+<table cellpadding='1' cellspacing='0'><tr><td><select onchange='sys_change_lang(this.value)'><option value='zh' selected>简体中文</option><option value='en'>English</option></select></td><td><select onchange='sys_change_tpl(this.value)'><option value='default' selected>默认风格</option><option value='crystal_blue'>水晶蓝</option></select></td></tr></table><span style='display:none;'><script type='text/javascript'>
+function sys_change_lang(m){var url='home.php?langsign='+m;window.location.href=url;}
+function sys_change_tpl(m){var url='home.php?template='+m;window.location.href=url;}</script></span>
